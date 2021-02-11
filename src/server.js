@@ -8,13 +8,11 @@
 // Imports
 import express from 'express'
 import hbs from 'express-hbs'
-import bodyParser from 'body-parser'
 import session from 'express-session'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 import helmet from 'helmet'
 import logger from 'morgan'
-import { connectDB } from './config/mongo.js'
 import { router } from './routes/router.js'
 
 // Variable declarations.
@@ -25,7 +23,6 @@ const baseUrl = process.env.BASE_URL || '/'
  * The main function of the application.
  */
 const main = async () => {
-  await connectDB()
 
   // Creates an Express application.
   const app = express()
@@ -55,8 +52,6 @@ const main = async () => {
   // Serve static files.
   app.use(express.static(join(dirFullPath, '..', 'public')))
 
-  // Body parser and logger.
-  app.use(bodyParser.urlencoded({ extended: true }))
   app.use(logger('dev'))
 
   // Session middleware
@@ -98,7 +93,34 @@ const main = async () => {
   })
 
   // Register routes.
-  app.use('/', router)
+  app.use(baseUrl, router)
+
+  // Error handler.
+  app.use(function (err, req, res, next) {
+  // 404 Not Found.
+  if (err.status === 404) {
+    return res
+      .status(404)
+      .sendFile(join(dirFullPath, 'views', 'errors', '404.html'))
+  }
+
+  // 500 Internal Server Error (in production, all other errors send this response).
+  if (req.app.get('env') !== 'development') {
+    return res
+      .status(500)
+      .sendFile(join(dirFullPath, 'views', 'errors', '500.html'))
+  }
+
+  // Development only!
+  // Only providing detailed error in development.
+
+  // Render the error page.
+  res
+    .status(err.status || 500)
+    .render('errors/error', { error: err })
+})
+
+
 
   // Starts the HTTP server.
   app.listen(process.env.PORT, () => {

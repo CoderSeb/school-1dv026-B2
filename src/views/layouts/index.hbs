@@ -15,12 +15,10 @@
 </head>
 
 <body>
-  <div class="main-container">
-    {{> header }}
-    {{> flash}}
-    {{{ body }}}
-    {{> footer }}
-  </div>
+  {{> header }}
+  {{> flash}}
+  <div class="main-container">{{{ body }}}</div>
+  {{> footer }}
 
   <!-- Bootstrap: jQuery and JS bundle w/ Popper.js -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
