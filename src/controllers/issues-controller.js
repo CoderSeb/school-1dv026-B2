@@ -11,7 +11,7 @@
  */
 export class IssuesController {
   /**
-   * Displays a list of products.
+   * Displays home view.
    *
    * @param {object} req - Express request object.
    * @param {object} res - Express response object.
@@ -19,7 +19,7 @@ export class IssuesController {
    */
   async index (req, res, next) {
     try {
-      res.render('layouts/index')
+      res.render('issues/index')
     } catch (error) {
       next(error)
     }

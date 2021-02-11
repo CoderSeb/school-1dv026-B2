@@ -11,6 +11,7 @@ import { IssuesController } from '../controllers/issues-controller.js'
 const controller = new IssuesController()
 
 export const router = express.Router()
+
 // Map HTTP verbs and route paths to controller actions.
 router.get('/', (req, res, next) => {
   controller.index(req, res, next)
