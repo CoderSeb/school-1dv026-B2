@@ -1,1 +1,14 @@
-<h1>Home of issues!</h1>
+<div class="container">
+  {{#if viewData }}
+  {{#each viewData}}
+  <div class="card card-body m-3 bg-dark text-light" style="width: 35rem;">
+    <p class="card-text font-italic">Author: {{creator}}<br>Created: {{created}}</p>
+    <h2 class="card-title">{{title}}</h2>
+    <h5 class="card-text text-primary">{{state}}</h5>
+    <p class="card-text">{{description}}</p>
+    <li class="card-list">{{labels}}</li>
+    <p class="card-text">Last changed: {{updated}}.</p>
+  </div>
+  {{/each}}
+  {{/if}}
+</div>
