@@ -5,6 +5,8 @@
  * @version 1.0.0
  */
 
+import axios from 'axios'
+import moment from 'moment'
 
 /**
  * Encapsulates a controller.
@@ -19,7 +21,30 @@ export class IssuesController {
    */
   async index (req, res, next) {
     try {
-      res.render('issues/index')
+      const viewData = await axios({
+        method: 'GET',
+        url: `${process.env.GITLAB_URL}/${process.env.GITLAB_PROJECT_ID}/issues`,
+        headers: {
+          Authorization: 'Bearer ' + process.env.GITLAB_TOKEN
+        }
+      }).then(response => {
+        const results = []
+        response.data.forEach(issue => {
+         const issueObj = {
+           title: issue.title,
+           state: issue.state,
+           description: issue.description,
+           creator: issue.author.name,
+           created: moment(issue.created_at).fromNow(),
+           updated: moment(issue.updated_at).fromNow(),
+           labels: issue.labels
+         }
+         results.push(issueObj)
+        })
+        return results
+      })
+      
+      res.render('issues/index', { viewData })
     } catch (error) {
       next(error)
     }
