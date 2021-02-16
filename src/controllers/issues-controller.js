@@ -49,4 +49,11 @@ export class IssuesController {
       next(error)
     }
   }
+
+  async webHook (req, res, next) {
+    if (req.headers['x-gitlab-event']) {
+      res.redirect('/')
+      return
+    }
+  }
 }

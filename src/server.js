@@ -14,6 +14,8 @@ import { fileURLToPath } from 'url'
 import helmet from 'helmet'
 import logger from 'morgan'
 import { router } from './routes/router.js'
+import http from 'http'
+import { Server } from 'socket.io'
 
 // Variable declarations.
 const dirFullPath = dirname(fileURLToPath(import.meta.url))
@@ -74,6 +76,17 @@ const main = async () => {
 
   app.use(session(sessionOptions))
 
+  // Add socket.io
+  const server = http.createServer(app)
+  const io = new Server(server)
+
+  io.on('connection', socket => {
+    console.log('A user connected...')
+    socket.on('disconnect', () => {
+      console.log('A user disconnected...')
+    })
+  })
+
   // Middleware to be executed before the routes.
   app.use((req, res, next) => {
     // Flash messages - survives only a round trip.
@@ -81,6 +94,8 @@ const main = async () => {
       res.locals.flash = req.session.flash
       delete req.session.flash
     }
+    // Adding socket.io to response object.
+    res.io = io
 
     res.locals.baseUrl = baseUrl
 
@@ -121,12 +136,12 @@ const main = async () => {
 })
 
 
-
   // Starts the HTTP server.
-  app.listen(process.env.PORT, () => {
+  server.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
   })
+
 }
 
 main().catch(console.error)
