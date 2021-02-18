@@ -32,6 +32,7 @@ export class IssuesController {
         response.data.forEach(issue => {
          const issueObj = {
            title: issue.title,
+           id: issue.iid,
            state: issue.state,
            description: issue.description,
            creator: issue.author.name,
@@ -41,19 +42,12 @@ export class IssuesController {
          }
          results.push(issueObj)
         })
-        return results
+        return results.sort((a, b) => a.id - b.id)
       })
       
       res.render('issues/index', { viewData })
     } catch (error) {
       next(error)
-    }
-  }
-
-  async webHook (req, res, next) {
-    if (req.headers['x-gitlab-event']) {
-      res.redirect('/')
-      return
     }
   }
 }

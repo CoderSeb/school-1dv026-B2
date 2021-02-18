@@ -1,9 +1,9 @@
 <div class="container">
   {{#if viewData }}
   {{#each viewData}}
-  <div class="card card-body m-3 bg-dark text-light" style="width: 35rem;">
+  <div class="card card-body m-3 bg-dark text-light" id={{id}} style="width: 35rem;">
     <p class="card-text font-italic">Author: {{creator}}<br>Created: {{created}}</p>
-    <h2 class="card-title">{{title}}</h2>
+    <h2 class="card-title">#{{id}} - {{title}}</h2>
     <h5 class="card-text text-primary">{{state}}</h5>
     <p class="card-text">{{description}}</p>
     <li class="card-list">{{labels}}</li>

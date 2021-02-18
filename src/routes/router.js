@@ -7,8 +7,10 @@
 
 import express from 'express'
 import { IssuesController } from '../controllers/issues-controller.js'
+import { HooksController } from '../controllers/hooks-controller.js'
 
 const issuesController = new IssuesController()
+const hooksController = new HooksController()
 export const router = express.Router()
 
 // Map HTTP verbs and route paths to controller actions.
@@ -16,8 +18,12 @@ router.get('/', (req, res, next) => {
   issuesController.index(req, res, next)
 })
 
+router.get('/socket', (req, res, next) => {
+  hooksController.index(req, res, next)
+})
+
 router.post('/webhook/issues', (req, res, next) => {
-  issuesController.webHook(req, res, next)
+  hooksController.webHook(req, res, next)
 })
 
 

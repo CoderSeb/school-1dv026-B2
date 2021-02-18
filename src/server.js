@@ -29,6 +29,7 @@ const main = async () => {
   // Creates an Express application.
   const app = express()
 
+  app.use(express.json())
   app.use(helmet())
 
   // Helmet settings.
@@ -80,10 +81,16 @@ const main = async () => {
   const server = http.createServer(app)
   const io = new Server(server)
 
-  io.on('connection', socket => {
-    console.log('A user connected...')
+  io.on('connection', (socket) => {
+    socket.on("join", function(name) {
+      console.log('A user connected...')
+    })
     socket.on('disconnect', () => {
       console.log('A user disconnected...')
+    })
+
+    socket.on('update', (data) => {
+      io.sockets.emit('update', data)
     })
   })
 
