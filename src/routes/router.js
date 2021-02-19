@@ -26,11 +26,9 @@ router.post('/webhook/issues', (req, res, next) => {
   hooksController.webHook(req, res, next)
 })
 
-
 // Catch 404 (ALWAYS keep this as the last route).
 router.use('*', (req, res, next) => {
   const error = new Error('Not Found')
   error.status = 404
   next(error)
 })
-
