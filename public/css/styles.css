@@ -41,3 +41,15 @@ body {
 		justify-content: center;
 	}
 }
+
+.card-img {
+	height: 70px !important;
+	width: 70px !important;
+	position: absolute;
+	right: 1em !important;
+}
+
+.card {
+	min-width:313px !important;
+	max-width:600px !important;
+}

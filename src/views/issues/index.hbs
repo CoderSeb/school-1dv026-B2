@@ -1,10 +1,11 @@
-<div class="container">
+<div class="card-deck m-auto lg">
   {{#if viewData }}
   {{#each viewData}}
-  <div class="card card-body m-3 bg-dark text-light" id={{id}} style="width: 35rem;">
+  <div class="card card-body m-3 bg-dark text-light clearfix" id={{id}}>
     <p class="card-text font-italic issue-creator&created">Author: {{creator}}<br>Created: {{created}}</p>
-    <h2 class="card-title issue-id&title">#{{id}} - {{title}}</h2>
-    <h5 class="card-text text-primary issue-state">{{state}}</h5>
+    <img src={{avatar}} class="card-img rounded" alt="Gravatar image">
+    <h4 class="card-title issue-id&title">#{{id}} - {{title}}</h4>
+    <h6 class="card-text text-primary issue-state">{{state}}</h6>
     <p class="card-text issue-description">{{description}}</p>
     {{#if labels}}
 
@@ -15,7 +16,7 @@
       {{/each}}
     </ul>
     {{/if}}
-    <p class="card-text issue-updated">Last changed: {{updated}}.</p>
+    <p class="card-text card-footer issue-updated">Last changed: {{updated}}.</p>
   </div>
   {{/each}}
   {{/if}}

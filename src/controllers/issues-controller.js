@@ -36,6 +36,7 @@ export class IssuesController {
             state: issue.state,
             description: issue.description,
             creator: issue.author.name,
+            avatar: issue.author.avatar_url,
             created: moment(issue.created_at).fromNow(),
             updated: moment(issue.updated_at).fromNow(),
             labels: issue.labels
