@@ -21,12 +21,10 @@ import { Server } from 'socket.io'
 const dirFullPath = dirname(fileURLToPath(import.meta.url))
 const baseUrl = process.env.BASE_URL || '/'
 
-
 /**
  * The main function of the application.
  */
 const main = async () => {
-
   // Creates an Express application.
   const app = express()
 
@@ -121,35 +119,33 @@ const main = async () => {
   // Error handler.
   app.use(function (err, req, res, next) {
   // 404 Not Found.
-  if (err.status === 404) {
-    return res
-      .status(404)
-      .sendFile(join(dirFullPath, 'views', 'errors', '404.html'))
-  }
+    if (err.status === 404) {
+      return res
+        .status(404)
+        .sendFile(join(dirFullPath, 'views', 'errors', '404.html'))
+    }
 
-  // 500 Internal Server Error (in production, all other errors send this response).
-  if (req.app.get('env') !== 'development') {
-    return res
-      .status(500)
-      .sendFile(join(dirFullPath, 'views', 'errors', '500.html'))
-  }
+    // 500 Internal Server Error (in production, all other errors send this response).
+    if (req.app.get('env') !== 'development') {
+      return res
+        .status(500)
+        .sendFile(join(dirFullPath, 'views', 'errors', '500.html'))
+    }
 
-  // Development only!
-  // Only providing detailed error in development.
+    // Development only!
+    // Only providing detailed error in development.
 
-  // Render the error page.
-  res
-    .status(err.status || 500)
-    .render('errors/error', { error: err })
-})
-
+    // Render the error page.
+    res
+      .status(err.status || 500)
+      .render('errors/error', { error: err })
+  })
 
   // Starts the HTTP server.
   server.listen(process.env.PORT, () => {
     console.log(`Server running at http://localhost:${process.env.PORT}`)
     console.log('Press Ctrl-C to terminate...')
   })
-
 }
 
 main().catch(console.error)
