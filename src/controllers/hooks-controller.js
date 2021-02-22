@@ -70,3 +70,26 @@ export class HooksController {
       res.redirect('./')
     })
   }
+
+  /**
+   * Sends a request to gitlab to reopen an issue.
+   *
+   * @param {object} req - Express request object.
+   * @param {object} res - Express response object.
+   * @param {Function} next - Express next middleware function.
+   */
+  async issueOpen (req, res, next) {
+    axios({
+      method: 'PUT',
+      url: `${process.env.GITLAB_URL}/${process.env.GITLAB_PROJECT_ID}/issues/${req.params.id}?state_event=reopen`,
+      headers: {
+        Authorization: 'Bearer ' + process.env.GITLAB_TOKEN
+      }
+    }).then(response => {
+      res.status(200).send('Issue is being reopened...')
+    }).catch(err => {
+      console.log('Ops! Something went wrong! ' + err.message)
+      res.redirect('./')
+    })
+  }
+}
