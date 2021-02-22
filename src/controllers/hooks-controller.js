@@ -30,22 +30,26 @@ export class HooksController {
    * @param {Function} next - Express next middleware function.
    */
   async webHook (req, res, next) {
-    if (req.headers['x-gitlab-event']) {
-      const issue = await req.body
-      const issueObj = {
-        title: issue.object_attributes.title,
-        id: issue.object_attributes.iid,
-        masterId: issue.object_attributes.id,
-        state: issue.object_attributes.state,
-        isOpen: issue.object_attributes.state === 'opened',
-        description: issue.object_attributes.description,
-        creator: issue.object_attributes.author_id === 558 ? 'Sebastian Åkerblom' : issue.user.name,
-        created: moment(new Date(issue.object_attributes.created_at)).fromNow(),
-        updated: moment(new Date(issue.object_attributes.updated_at)).fromNow(),
-        labels: issue.object_attributes.labels
+    try {
+      if (req.headers['x-gitlab-event']) {
+        const issue = await req.body
+        const issueObj = {
+          title: issue.object_attributes.title,
+          id: issue.object_attributes.iid,
+          masterId: issue.object_attributes.id,
+          state: issue.object_attributes.state,
+          isOpen: issue.object_attributes.state === 'opened',
+          description: issue.object_attributes.description,
+          creator: issue.object_attributes.author_id === 558 ? 'Sebastian Åkerblom' : issue.user.name,
+          created: moment(new Date(issue.object_attributes.created_at)).fromNow(),
+          updated: moment(new Date(issue.object_attributes.updated_at)).fromNow(),
+          labels: issue.object_attributes.labels
+        }
+        res.io.emit('update', issueObj)
+        res.status(200).send('New information from socket!')
       }
-      res.io.emit('update', issueObj)
-      res.status(200).send('New information from socket!')
+    } catch (err) {
+      next(err)
     }
   }
 
@@ -67,7 +71,7 @@ export class HooksController {
       res.status(200).send('Issue is being closed...')
     }).catch(err => {
       console.log('Ops! Something went wrong! ' + err.message)
-      res.redirect('./')
+      next(err)
     })
   }
 
@@ -89,7 +93,7 @@ export class HooksController {
       res.status(200).send('Issue is being reopened...')
     }).catch(err => {
       console.log('Ops! Something went wrong! ' + err.message)
-      res.redirect('./')
+      next(err)
     })
   }
 }
