@@ -21,6 +21,7 @@ import { Server } from 'socket.io'
 const dirFullPath = dirname(fileURLToPath(import.meta.url))
 const baseUrl = process.env.BASE_URL || '/'
 
+
 /**
  * The main function of the application.
  */
