@@ -33,7 +33,9 @@ export class IssuesController {
           const issueObj = {
             title: issue.title,
             id: issue.iid,
+            masterId: issue.id,
             state: issue.state,
+            isOpen: issue.state === 'opened',
             description: issue.description,
             creator: issue.author.name,
             avatar: issue.author.avatar_url,
