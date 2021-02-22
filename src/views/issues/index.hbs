@@ -17,6 +17,11 @@
     </ul>
     {{/if}}
     <p class="card-text card-footer issue-updated">Last changed: {{updated}}.</p>
+    {{#if isOpen}}
+    <button class="btn btn-warning" value="cl{{id}}">Close</button>
+    {{else}}
+    <button class="btn btn-success" value="op{{id}}">Open</button>
+    {{/if}}
   </div>
   {{/each}}
   {{/if}}
