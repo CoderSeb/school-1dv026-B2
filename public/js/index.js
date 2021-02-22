@@ -2,9 +2,25 @@ import '../socket.io/socket.io.js'
 const baseURL = document.querySelector('base').getAttribute('href')
 const socket = window.io({ path: `${baseURL}socket.io` })
 
+const allBtns = document.querySelectorAll('.btn')
+
+allBtns.forEach(button => {
+  button.addEventListener('click', event => {
+    if (event.target.value.substring(0, 2) === 'op') {
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', `/issues/${event.target.value.substring(2)}/open`, true)
+      xhr.send()
+    } else {
+      const xhr = new XMLHttpRequest()
+      xhr.open('POST', `/issues/${event.target.value.substring(2)}/close`, true)
+      xhr.send()
+    }
+  })
+})
+
 socket.on('update', (data) => {
   const nodeList = document.getElementById(data.id).children
-  nodeList[0].innerText = `Author: ${data.creator}<br>Created: ${data.created}`
+  nodeList[0].innerText = `Author: ${data.creator}\nCreated: ${data.created}`
   nodeList[2].innerText = `#${data.id} - ${data.title}`
   nodeList[3].innerText = data.state
   nodeList[4].innerText = data.description
@@ -30,5 +46,14 @@ socket.on('update', (data) => {
   } else if (nodeList[5].tagName === 'UL' && data.labels.length < 1) {
     nodeList[5].innerHTML = ''
   }
-  nodeList[nodeList.length - 1].innerText = `Last changed: ${data.updated}.`
+  nodeList[nodeList.length - 2].innerText = `Last changed: ${data.updated}.`
+  if (data.isOpen) {
+    nodeList[nodeList.length - 1].innerText = 'Close'
+    nodeList[nodeList.length - 1].value = 'cl' + data.id
+    nodeList[nodeList.length - 1].classList.replace('btn-success', 'btn-warning')
+  } else {
+    nodeList[nodeList.length - 1].innerText = 'Open'
+    nodeList[nodeList.length - 1].value = 'op' + data.id
+    nodeList[nodeList.length - 1].classList.replace('btn-warning', 'btn-success')
+  }
 })
