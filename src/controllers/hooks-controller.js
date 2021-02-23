@@ -37,6 +37,7 @@ export class HooksController {
           title: issue.object_attributes.title,
           id: issue.object_attributes.iid,
           masterId: issue.object_attributes.id,
+          avatar: issue.user.avatar_url,
           state: issue.object_attributes.state,
           isOpen: issue.object_attributes.state === 'opened',
           description: issue.object_attributes.description,

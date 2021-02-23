@@ -16,8 +16,13 @@ allBtns.forEach(button => {
   })
 })
 
-socket.on('update', (data) => {
-  const nodeList = document.getElementById(data.id).children
+/**
+ * Updates the closed/reopened issue.
+ *
+ * @param {*} data as the changed issue data.
+ * @param {*} nodeList as the node list.
+ */
+function updateIssue (data, nodeList) {
   nodeList[0].innerText = `Author: ${data.creator}\nCreated: ${data.created}`
   nodeList[2].innerText = `#${data.id} - ${data.title}`
   nodeList[3].innerText = data.state
@@ -53,5 +58,21 @@ socket.on('update', (data) => {
     nodeList[nodeList.length - 1].innerText = 'Open'
     nodeList[nodeList.length - 1].value = 'op' + data.id
     nodeList[nodeList.length - 1].classList.replace('btn-warning', 'btn-success')
+  }
+}
+
+socket.on('update', (data) => {
+  const issueDiv = document.getElementById(data.id)
+  if (issueDiv !== null) {
+    const nodeList = issueDiv.children
+    updateIssue(data, nodeList)
+  } else {
+    const newDiv = document.createElement('div')
+    const template = document.getElementById('issue-template').innerHTML
+    const renderIssue = window.Handlebars.compile(template)
+    const newIssue = renderIssue(data)
+    newDiv.innerHTML = newIssue
+    console.log(newDiv)
+    document.getElementById('deckOfCards').appendChild(newDiv)
   }
 })
