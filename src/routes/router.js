@@ -26,12 +26,8 @@ router.post('/webhook/issues', (req, res, next) => {
   hooksController.webHook(req, res, next)
 })
 
-router.post('/issues/:id/close', (req, res, next) => {
-  hooksController.issueClose(req, res, next)
-})
-
-router.post('/issues/:id/open', (req, res, next) => {
-  hooksController.issueOpen(req, res, next)
+router.post('/issues/:id/:state', (req, res, next) => {
+  issuesController.issueOpenClose(req, res, next)
 })
 
 // Catch 404 (ALWAYS keep this as the last route).

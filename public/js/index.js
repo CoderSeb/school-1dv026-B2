@@ -6,15 +6,13 @@ const allBtns = document.querySelectorAll('.btn')
 
 allBtns.forEach(button => {
   button.addEventListener('click', event => {
+    let newState = 'close'
     if (event.target.value.substring(0, 2) === 'op') {
-      const xhr = new XMLHttpRequest()
-      xhr.open('POST', `/issues/${event.target.value.substring(2)}/open`, true)
-      xhr.send()
-    } else {
-      const xhr = new XMLHttpRequest()
-      xhr.open('POST', `/issues/${event.target.value.substring(2)}/close`, true)
-      xhr.send()
+      newState = 'open'
     }
+    const xhr = new XMLHttpRequest()
+    xhr.open('POST', `./issues/${event.target.value.substring(2)}/${newState}`, true)
+    xhr.send()
   })
 })
 
