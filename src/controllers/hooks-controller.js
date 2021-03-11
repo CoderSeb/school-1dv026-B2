@@ -31,7 +31,7 @@ export class HooksController {
    */
   async webHook (req, res, next) {
     try {
-      if (req.headers['x-gitlab-event']) {
+      if (req.headers['x-gitlab-token'] === process.env.GITLAB_TOKEN) {
         const issue = await req.body
         const issueObj = {
           title: issue.object_attributes.title,
@@ -48,6 +48,8 @@ export class HooksController {
         }
         res.io.emit('update', issueObj)
         res.status(200).send('New information from socket!')
+      } else {
+        res.sendStatus(403)
       }
     } catch (err) {
       next(err)
