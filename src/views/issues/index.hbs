@@ -1,0 +1,53 @@
+<div class="card-deck m-auto lg" id="deckOfCards">
+  {{#if viewData }}
+  {{#each viewData}}
+  <div class="card card-body m-3 bg-dark text-light clearfix" id={{id}}>
+    <p class="card-text font-italic issue-creator&created">Author: {{creator}}<br>Created: {{created}}</p>
+    <img src={{avatar}} class="card-img rounded" alt="Gravatar image (Try reloading the page if no img)">
+    <h4 class="card-title issue-id&title">#{{id}} - {{title}}</h4>
+    <h6 class="card-text text-primary issue-state">{{state}}</h6>
+    <p class="card-text issue-description">{{description}}</p>
+    {{#if labels}}
+
+    <ul class="card-list text-warning">
+      <p class="card-title list-title h5 text-warning">Labels</p>
+      {{#each labels}}
+      <li class="card-list list-item issue-labels">{{this}}</li>
+      {{/each}}
+    </ul>
+    {{/if}}
+    <p class="card-text card-footer issue-updated">Last changed: {{updated}}.</p>
+    {{#if isOpen}}
+    <button class="btn btn-warning" value="cl{{id}}">Close</button>
+    {{else}}
+    <button class="btn btn-success" value="op{{id}}">Open</button>
+    {{/if}}
+  </div>
+  {{/each}}
+  {{/if}}
+</div>
+
+<template id="issue-template">
+  <div class="card card-body m-3 bg-dark text-light clearfix" id=\{{id}}>
+    <p class="card-text font-italic issue-creator&created">Author: \{{creator}}<br>Created: \{{created}}</p>
+    <img src="\{{avatar}}" class="card-img rounded" alt="Gravatar image (Try reloading the page if no img)">
+    <h4 class="card-title issue-id&title">#\{{id}} - \{{title}}</h4>
+    <h6 class="card-text text-primary issue-state">\{{state}}</h6>
+    <p class="card-text issue-description">\{{description}}</p>
+    \{{#if labels}}
+
+    <ul class="card-list text-warning">
+      <p class="card-title list-title h5 text-warning">Labels</p>
+      \{{#each labels}}
+      <li class="card-list list-item issue-labels">\{{this}}</li>
+      \{{/each}}
+    </ul>
+    \{{/if}}
+    <p class="card-text card-footer issue-updated">Last changed: \{{updated}}.</p>
+    \{{#if isOpen}}
+    <button class="btn btn-warning" value="cl\{{id}}">Close</button>
+    \{{else}}
+    <button class="btn btn-success" value="op\{{id}}">Open</button>
+    \{{/if}}
+  </div>
+</template>
